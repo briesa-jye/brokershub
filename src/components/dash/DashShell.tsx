@@ -6,8 +6,9 @@ import { useState, type ReactNode } from "react";
 import { Logo } from "../Logo";
 import { Icon, type IconName } from "../Icons";
 import { Avatar, Pill } from "./ui";
+import { NotificationsBell } from "./NotificationsBell";
 import { useDemo } from "./DemoProvider";
-import { USER, WORKSPACE, fileStatus, initialsOf } from "@/lib/demo-data";
+import { USER, fileStatus, initialsOf } from "@/lib/demo-data";
 
 const NAV: { href: string; label: string; icon: IconName }[] = [
   { href: "/dashboard", label: "Dashboard", icon: "grid" },
@@ -22,7 +23,7 @@ const NAV: { href: string; label: string; icon: IconName }[] = [
 export function DashShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const { files } = useDemo();
+  const { files, profile } = useDemo();
   const flagged = files.filter((f) => fileStatus(f) === "flag").length;
   const current = NAV.find((n) =>
     n.href === "/dashboard" ? pathname === n.href : pathname.startsWith(n.href),
@@ -41,7 +42,7 @@ export function DashShell({ children }: { children: ReactNode }) {
       </Link>
 
       <div className="mx-3 shrink-0 rounded-xl border border-line bg-surface px-3 py-2.5">
-        <p className="truncate text-sm font-bold">{WORKSPACE}</p>
+        <p className="truncate text-sm font-bold">{profile.workspace}</p>
         <p className="text-xs text-ink-soft">Brokerage plan</p>
       </div>
 
@@ -129,13 +130,41 @@ export function DashShell({ children }: { children: ReactNode }) {
             <Icon name="menu" className="h-6 w-6" />
           </button>
           <p className="font-display text-base font-extrabold tracking-tight lg:hidden">
-            {current?.label ?? "Dashboard"}
+            {current?.label ??
+              (pathname.startsWith("/dashboard/settings")
+                ? "Settings"
+                : pathname.startsWith("/dashboard/help")
+                  ? "Help"
+                  : "Dashboard")}
           </p>
           <GlobalSearch className="ml-auto hidden max-w-md flex-1 sm:block lg:ml-0" />
-          <span className="ml-auto flex items-center gap-2 sm:gap-3">
-            <span className="hidden sm:inline-flex">
+          <span className="ml-auto flex items-center gap-1 sm:gap-2 lg:ml-auto">
+            <span className="mr-1 hidden xl:inline-flex">
               <Pill tone="neutral">Demo · sample data</Pill>
             </span>
+            <NotificationsBell />
+            <Link
+              href="/dashboard/help"
+              aria-label="Help"
+              title="Help"
+              aria-current={pathname.startsWith("/dashboard/help") ? "page" : undefined}
+              className={`flex h-10 w-10 items-center justify-center rounded-full hover:bg-tint ${
+                pathname.startsWith("/dashboard/help") ? "bg-accent/15" : ""
+              }`}
+            >
+              <Icon name="help" className="h-5 w-5" />
+            </Link>
+            <Link
+              href="/dashboard/settings"
+              aria-label="Settings"
+              title="Settings"
+              aria-current={pathname.startsWith("/dashboard/settings") ? "page" : undefined}
+              className={`flex h-10 w-10 items-center justify-center rounded-full hover:bg-tint ${
+                pathname.startsWith("/dashboard/settings") ? "bg-accent/15" : ""
+              }`}
+            >
+              <Icon name="settings" className="h-5 w-5" />
+            </Link>
             <Avatar initials={who.initials} tone={0} />
           </span>
         </header>

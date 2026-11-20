@@ -84,6 +84,23 @@ export const CADENCE: Record<Risk, number> = { High: 14, Medium: 30, Low: 90 };
 /** File reviews expected per rep each quarter, by risk rating. */
 export const REVIEWS_REQUIRED: Record<Risk, number> = { High: 4, Medium: 2, Low: 1 };
 
+export type Policy = { cadence: Record<Risk, number>; reviews: Record<Risk, number> };
+export const defaultPolicy: Policy = { cadence: CADENCE, reviews: REVIEWS_REQUIRED };
+
+export type NotifyKey = "breaches" | "files" | "supervision" | "complaints" | "licence";
+export const defaultNotify: Record<NotifyKey, boolean> = {
+  breaches: true, files: true, supervision: true, complaints: true, licence: true,
+};
+
+export type Access = "Owner" | "Supervisor" | "Representative" | "Read-only";
+
+export const defaultProfile = {
+  workspace: WORKSPACE,
+  acl: "000000",
+  email: "jess@harbourhomeloans.example",
+  phone: "02 5550 0100",
+};
+
 export const initialReps: Rep[] = [
   {
     name: "Jess Smith", role: "Principal and responsible manager", kind: "Licensee", risk: "Low",
@@ -164,9 +181,9 @@ export const initialReviews: Review[] = [
 
 export type RepStatus = { days: number; cadence: number; left: number; state: "ok" | "soon" | "overdue" };
 
-export function supervisionStatus(rep: Rep): RepStatus {
+export function supervisionStatus(rep: Rep, cadences: Record<Risk, number> = CADENCE): RepStatus {
   const days = -daysFromToday(rep.lastContact);
-  const cadence = CADENCE[rep.risk];
+  const cadence = cadences[rep.risk];
   const left = cadence - days;
   return { days, cadence, left, state: left < 0 ? "overdue" : left <= 7 ? "soon" : "ok" };
 }

@@ -4,100 +4,28 @@ import Link from "next/link";
 import { Icon } from "../Icons";
 import { Avatar, Card, CardHead, PageHeading, Pill, Progress, Stat, btnDark, btnLight } from "./ui";
 import { LicenceCard } from "./LicenceCard";
+import { useAttention } from "./attention";
 import { useDemo } from "./DemoProvider";
 import {
-  REVIEWS_REQUIRED,
-  STEPS,
   USER,
-  daysFromToday,
   fileStatus,
   fmtDate,
   initialsOf,
-  licence,
   supervisionStatus,
 } from "@/lib/demo-data";
 
-type Item = {
-  key: string;
-  t: string;
-  where: string;
-  due: string;
-  owed: boolean;
-  who: string;
-  href: string;
-  fileId?: string;
-};
-
 export function Overview() {
-  const { files, complaints, reps, reviews, breaches, log, selectFile } = useDemo();
+  const { files, complaints, reps, reviews, breaches, log, selectFile, policy } = useDemo();
 
   const flagged = files.filter((f) => fileStatus(f) === "flag");
   const cleared = files.filter((f) => fileStatus(f) === "clear").length;
   const openComplaints = complaints.filter((c) => !c.resolved);
   const liveBreaches = breaches.filter((b) => b.status === "Assessing" || b.status === "Reportable");
-  const supervision = reps.map((r) => ({ r, st: supervisionStatus(r) }));
+  const supervision = reps.map((r) => ({ r, st: supervisionStatus(r, policy.cadence) }));
   const overdueReps = supervision.filter((x) => x.st.state === "overdue");
   const openFindings = reviews.filter((v) => !v.resolved).length;
 
-  const items: Item[] = [
-    ...liveBreaches.map((b) => {
-      const d = daysFromToday(b.due);
-      return {
-        key: b.id,
-        t: b.status === "Reportable" ? `Lodge ${b.id} with ASIC` : `Decide if ${b.id} is reportable`,
-        where: b.summary,
-        due: `${d} days left`,
-        owed: b.status === "Reportable" || d <= 14,
-        who: b.rep,
-        href: "/dashboard/breaches",
-      };
-    }),
-    ...flagged.map((f) => {
-      const step = STEPS.find((s) => f.overdue.includes(s.key) && !f.done.includes(s.key));
-      return {
-        key: f.id,
-        t: `${step?.label ?? "Step"} is overdue`,
-        where: `${f.client}, ${f.purpose.toLowerCase()}`,
-        due: "Overdue",
-        owed: true,
-        who: f.broker,
-        href: "/dashboard/files",
-        fileId: f.id,
-      };
-    }),
-    ...overdueReps.map(({ r, st }) => ({
-      key: `sup-${r.name}`,
-      t: `Contact ${r.name}`,
-      where: `${st.cadence}-day cadence, last contact ${fmtDate(r.lastContact)}`,
-      due: `Overdue ${-st.left} days`,
-      owed: true,
-      who: r.name,
-      href: "/dashboard/supervision",
-    })),
-    ...openComplaints.map((c) => {
-      const d = daysFromToday(c.due);
-      return {
-        key: c.id,
-        t: `Respond to complaint ${c.id}`,
-        where: `${c.client}: ${c.summary}`,
-        due: `${d} days left`,
-        owed: d <= 14,
-        who: c.owner,
-        href: "/dashboard/complaints",
-      };
-    }),
-    ...licence
-      .filter((l) => l.date && daysFromToday(l.date) <= 60)
-      .map((l) => ({
-        key: l.label,
-        t: `${l.label}: ${l.dateLabel?.toLowerCase()} ${fmtDate(l.date!)}`,
-        where: "Licence health",
-        due: `${daysFromToday(l.date!)} days`,
-        owed: true,
-        who: USER.name,
-        href: "/dashboard/representatives",
-      })),
-  ];
+  const items = useAttention();
 
   return (
     <>
@@ -171,7 +99,7 @@ export function Overview() {
           />
           <ul className="space-y-4 p-5">
             {reps.map((r) => {
-              const need = REVIEWS_REQUIRED[r.risk];
+              const need = policy.reviews[r.risk];
               const done = reviews.filter((v) => files.find((f) => f.id === v.fileId)?.broker === r.name).length;
               return (
                 <li key={r.name}>

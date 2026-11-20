@@ -4,7 +4,6 @@ import { useState } from "react";
 import { Avatar, Card, CardHead, PageHeading, Pill, Progress, Stat, btnDark, btnLight } from "./ui";
 import { useDemo } from "./DemoProvider";
 import {
-  REVIEWS_REQUIRED,
   fileStatus,
   fmtDate,
   initialsOf,
@@ -39,11 +38,11 @@ function ContactForm({ rep }: { rep: string }) {
 }
 
 export function SupervisionView() {
-  const { reps, files, reviews, log, reviewFile, resolveFinding } = useDemo();
+  const { reps, files, reviews, log, reviewFile, resolveFinding, policy } = useDemo();
 
   const rows = reps.map((r) => {
-    const st = supervisionStatus(r);
-    const need = REVIEWS_REQUIRED[r.risk];
+    const st = supervisionStatus(r, policy.cadence);
+    const need = policy.reviews[r.risk];
     const done = reviews.filter((v) => files.find((f) => f.id === v.fileId)?.broker === r.name).length;
     return { r, st, need, done };
   });
