@@ -1,11 +1,6 @@
-import type { Metadata } from "next";
-import { AuthStub } from "@/components/AuthStub";
+import { redirect } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "Sign in",
-  robots: { index: false },
-};
-
+/** No real accounts yet: signing in opens the demo dashboard. */
 export default function Page() {
-  return <AuthStub mode="Sign in" />;
+  redirect("/dashboard");
 }

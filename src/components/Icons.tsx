@@ -7,6 +7,27 @@ const paths: Record<string, ReactNode> = {
   check: <path d="M5 12.5l4.5 4.5L19 7" />,
   flag: <path d="M5 21V4M5 4h11l-2 4 2 4H5" />,
   plus: <path d="M12 5v14M5 12h14" />,
+  grid: (
+    <>
+      <rect x="4" y="4" width="7" height="7" rx="1.5" />
+      <rect x="13" y="4" width="7" height="7" rx="1.5" />
+      <rect x="4" y="13" width="7" height="7" rx="1.5" />
+      <rect x="13" y="13" width="7" height="7" rx="1.5" />
+    </>
+  ),
+  file: (
+    <>
+      <path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8l-5-5z" />
+      <path d="M14 3v5h5M9 13h6M9 17h4" />
+    </>
+  ),
+  users: (
+    <>
+      <circle cx="9" cy="8" r="3.5" />
+      <path d="M2.5 20c.5-3.5 3-5.5 6.5-5.5s6 2 6.5 5.5M16 5a3.5 3.5 0 010 7M18 14.5c2 .6 3.2 2.5 3.5 5.5" />
+    </>
+  ),
+  download: <path d="M12 4v11M7 11l5 5 5-5M5 20h14" />,
   user: (
     <>
       <circle cx="12" cy="7.5" r="3.5" />

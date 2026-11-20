@@ -1,5 +1,9 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 
+/** Marketing pages get the navbar and footer; the dashboard brings its own shell. */
 export function SiteChrome({
   nav,
   footer,
@@ -9,6 +13,8 @@ export function SiteChrome({
   footer: ReactNode;
   children: ReactNode;
 }) {
+  const path = usePathname();
+  if (path.startsWith("/dashboard")) return <main className="flex-1">{children}</main>;
   return (
     <>
       {nav}
