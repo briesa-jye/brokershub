@@ -1,60 +1,51 @@
 "use client";
 
-import { PageTitle } from "./DashShell";
+import { Avatar, Card, PageHeading, Pill, btnDark } from "./ui";
 import { useDemo } from "./DemoProvider";
-import { daysFromToday, fmtDate } from "@/lib/demo-data";
+import { daysFromToday, fmtDate, initialsOf } from "@/lib/demo-data";
 
 export function ComplaintsView() {
   const { complaints, resolveComplaint } = useDemo();
+  const open = complaints.filter((c) => !c.resolved).length;
 
   return (
     <>
-      <PageTitle title="Complaints">
-        Every complaint is logged the day it arrives, with its response deadline and each step toward closing it.
-      </PageTitle>
-      <ul className="space-y-4">
-        {complaints.map((c) => {
-          const left = daysFromToday(c.due);
-          const urgent = !c.resolved && left <= 14;
-          return (
-            <li key={c.id} className={`rounded-2xl border p-5 sm:p-6 ${urgent ? "border-ink bg-tint" : "border-line bg-surface"}`}>
-              <div className="flex flex-wrap items-start justify-between gap-3">
-                <div className="min-w-0">
-                  <p className="font-mono text-xs uppercase tracking-widest text-ink-soft">
-                    {c.id} · received {fmtDate(c.received)} · {c.owner}
-                  </p>
-                  <h2 className="mt-1 font-display text-xl font-extrabold">{c.client}</h2>
-                  <p className="mt-1 text-ink-soft">{c.summary}</p>
+      <PageHeading
+        title="Complaints"
+        sub="Each complaint is logged the day it arrives, with its response deadline and every step toward closing it."
+        actions={<Pill tone={open ? "owed" : "ok"}>{open} open</Pill>}
+      />
+      <Card>
+        <ul>
+          {complaints.map((c) => {
+            const left = daysFromToday(c.due);
+            const urgent = !c.resolved && left <= 14;
+            return (
+              <li key={c.id} className={`border-b border-line last:border-0 ${urgent ? "bg-accent/10" : ""}`}>
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-3 px-5 py-4">
+                  <Avatar initials={initialsOf(c.owner)} tone={1} />
+                  <div className="min-w-0 flex-1 basis-64">
+                    <p className="text-sm font-semibold">
+                      {c.id} · {c.client}
+                    </p>
+                    <p className="text-sm text-ink-soft">{c.summary}</p>
+                    <p className="mt-1 text-xs text-ink-soft">
+                      Received {fmtDate(c.received)} · {c.owner} · response due {fmtDate(c.due)}
+                      {c.resolved ? " (closed within time)" : ` (${left} days left)`}
+                    </p>
+                  </div>
+                  <Pill tone={c.resolved ? "ok" : urgent ? "owed" : "neutral"}>{c.stage}</Pill>
+                  {!c.resolved && (
+                    <button type="button" onClick={() => resolveComplaint(c.id)} className={btnDark}>
+                      Mark resolved
+                    </button>
+                  )}
                 </div>
-                <span
-                  className={`rounded-full px-3 py-1 font-mono text-[0.7rem] uppercase tracking-wider ${
-                    c.resolved ? "bg-accent text-ink" : "bg-ink text-bg"
-                  }`}
-                >
-                  {c.stage}
-                </span>
-              </div>
-              <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-4">
-                <p className="text-sm">
-                  <span className="font-semibold">Response due {fmtDate(c.due)}</span>{" "}
-                  <span className="text-ink-soft">
-                    {c.resolved ? "· closed within time" : `· ${left} days left`}
-                  </span>
-                </p>
-                {!c.resolved && (
-                  <button
-                    type="button"
-                    onClick={() => resolveComplaint(c.id)}
-                    className="rounded-full bg-ink px-5 py-2 text-sm font-semibold text-bg hover:bg-ink/85"
-                  >
-                    Mark resolved
-                  </button>
-                )}
-              </div>
-            </li>
-          );
-        })}
-      </ul>
+              </li>
+            );
+          })}
+        </ul>
+      </Card>
     </>
   );
 }

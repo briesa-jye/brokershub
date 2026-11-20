@@ -28,6 +28,16 @@ const paths: Record<string, ReactNode> = {
     </>
   ),
   download: <path d="M12 4v11M7 11l5 5 5-5M5 20h14" />,
+  logout: <path d="M10 4H6a2 2 0 00-2 2v12a2 2 0 002 2h4M15 8l4 4-4 4M19 12H9" />,
+  search: (
+    <>
+      <circle cx="11" cy="11" r="6.5" />
+      <path d="M16 16l4.5 4.5" />
+    </>
+  ),
+  shield: (
+    <path d="M12 3l8 3v6c0 4.5-3.2 8-8 9-4.8-1-8-4.5-8-9V6l8-3zM9 12l2 2 4-4" />
+  ),
   user: (
     <>
       <circle cx="12" cy="7.5" r="3.5" />

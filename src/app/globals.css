@@ -291,3 +291,13 @@ main .grid > * {
     min-height: 2.75rem;
   }
 }
+
+/* dashboard: lists keep their text on one line, wrapping on phones */
+@media (max-width: 639px) {
+  .app-content .truncate {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    overflow-wrap: anywhere;
+  }
+}

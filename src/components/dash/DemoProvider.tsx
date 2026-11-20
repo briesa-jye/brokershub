@@ -14,6 +14,8 @@ type Demo = {
   complaints: Complaint[];
   toggleStep: (fileId: string, step: StepKey) => void;
   resolveComplaint: (id: string) => void;
+  selectedFileId: string;
+  selectFile: (id: string) => void;
 };
 
 const Ctx = createContext<Demo | null>(null);
@@ -22,11 +24,14 @@ const Ctx = createContext<Demo | null>(null);
 export function DemoProvider({ children }: { children: ReactNode }) {
   const [files, setFiles] = useState(initialFiles);
   const [complaints, setComplaints] = useState(initialComplaints);
+  const [selectedFileId, selectFile] = useState("LF-1043");
 
   const value = useMemo<Demo>(
     () => ({
       files,
       complaints,
+      selectedFileId,
+      selectFile,
       toggleStep: (fileId, step) =>
         setFiles((fs) =>
           fs.map((f) =>
@@ -45,7 +50,7 @@ export function DemoProvider({ children }: { children: ReactNode }) {
           cs.map((c) => (c.id === id ? { ...c, resolved: true, stage: "Resolved" } : c)),
         ),
     }),
-    [files, complaints],
+    [files, complaints, selectedFileId],
   );
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
