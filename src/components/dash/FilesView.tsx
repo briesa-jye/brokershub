@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Avatar, Card, CardHead, PageHeading, Pill, Progress, type Tone } from "./ui";
+import { Avatar, Card, CardHead, PageHeading, Pill, Progress, btnDark, btnLight, type Tone } from "./ui";
 import { useDemo } from "./DemoProvider";
 import { Icon } from "../Icons";
 import { STEPS, fileStatus, fmtDate, initialsOf, money, type FileStatus } from "@/lib/demo-data";
@@ -17,7 +17,7 @@ const tone: Record<FileStatus, Tone> = { clear: "ok", open: "neutral", flag: "ow
 const label: Record<FileStatus, string> = { clear: "Cleared", open: "In progress", flag: "Flagged" };
 
 export function FilesView() {
-  const { files, toggleStep, selectedFileId, selectFile } = useDemo();
+  const { files, toggleStep, selectedFileId, selectFile, reviews, reviewFile, resolveFinding } = useDemo();
   const [filter, setFilter] = useState<"all" | FileStatus>("all");
   const [query, setQuery] = useState("");
 
@@ -28,6 +28,9 @@ export function FilesView() {
   );
   const selected = files.find((f) => f.id === selectedFileId) ?? files[0];
   const pct = Math.round((selected.done.length / STEPS.length) * 100);
+  const review = reviews.find((v) => v.fileId === selected.id);
+  const missing = STEPS.length - selected.done.length;
+  const late = selected.overdue.filter((k) => !selected.done.includes(k)).length;
 
   return (
     <>
@@ -113,6 +116,13 @@ export function FilesView() {
               </span>
             </div>
             <Progress pct={pct} />
+            <p className="mt-3 text-sm">
+              {missing === 0
+                ? "Ready: every step is on file and the file would stand up to a review."
+                : late
+                  ? `Hold: ${late} overdue step${late === 1 ? "" : "s"} and ${missing} missing in total. Fix before this goes to a lender.`
+                  : `${missing} step${missing === 1 ? "" : "s"} still to complete.`}
+            </p>
           </div>
           <ul>
             {STEPS.map((st) => {
@@ -139,6 +149,35 @@ export function FilesView() {
               );
             })}
           </ul>
+          <div className="flex flex-wrap items-center gap-3 border-t border-line bg-bg px-5 py-4">
+            <span className="min-w-0 flex-1 basis-40">
+              <span className="block text-sm font-semibold">Supervision review</span>
+              <span className="block text-xs text-ink-soft">
+                {!review
+                  ? "Not reviewed yet"
+                  : review.outcome === "pass"
+                    ? `Passed ${fmtDate(review.date)}`
+                    : review.resolved
+                      ? `Finding fixed (raised ${fmtDate(review.date)})`
+                      : `Finding open since ${fmtDate(review.date)}`}
+              </span>
+            </span>
+            {!review && (
+              <>
+                <button type="button" onClick={() => reviewFile(selected.id, "pass")} className={btnLight}>
+                  Pass
+                </button>
+                <button type="button" onClick={() => reviewFile(selected.id, "fix")} className={btnDark}>
+                  Needs fix
+                </button>
+              </>
+            )}
+            {review && review.outcome === "fix" && !review.resolved && (
+              <button type="button" onClick={() => resolveFinding(selected.id)} className={btnLight}>
+                Mark fixed
+              </button>
+            )}
+          </div>
         </Card>
       </div>
     </>

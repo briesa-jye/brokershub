@@ -38,6 +38,18 @@ const paths: Record<string, ReactNode> = {
   shield: (
     <path d="M12 3l8 3v6c0 4.5-3.2 8-8 9-4.8-1-8-4.5-8-9V6l8-3zM9 12l2 2 4-4" />
   ),
+  eye: (
+    <>
+      <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z" />
+      <circle cx="12" cy="12" r="3" />
+    </>
+  ),
+  alert: (
+    <>
+      <path d="M12 3.5L2.5 20h19L12 3.5z" />
+      <path d="M12 10v4.5M12 17.5v.1" />
+    </>
+  ),
   user: (
     <>
       <circle cx="12" cy="7.5" r="3.5" />

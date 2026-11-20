@@ -12,8 +12,10 @@ import { USER, WORKSPACE, fileStatus, initialsOf } from "@/lib/demo-data";
 const NAV: { href: string; label: string; icon: IconName }[] = [
   { href: "/dashboard", label: "Dashboard", icon: "grid" },
   { href: "/dashboard/files", label: "Loan files", icon: "file" },
+  { href: "/dashboard/supervision", label: "Supervision", icon: "eye" },
+  { href: "/dashboard/representatives", label: "Representatives", icon: "users" },
   { href: "/dashboard/complaints", label: "Complaints", icon: "flag" },
-  { href: "/dashboard/team", label: "Team and CPD", icon: "users" },
+  { href: "/dashboard/breaches", label: "Breaches", icon: "alert" },
   { href: "/dashboard/audit", label: "Audit pack", icon: "shield" },
 ];
 

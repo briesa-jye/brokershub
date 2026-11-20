@@ -9,10 +9,10 @@ const cta =
   "inline-flex items-center gap-2 rounded-full px-7 py-3.5 font-semibold transition-colors duration-200";
 
 const who = [
+  "Independent credit licensees",
+  "Boutique licensee groups",
+  "Brokerage principals",
   "Mortgage brokers",
-  "Asset finance brokers",
-  "Commercial finance brokers",
-  "Brokerage owners",
   "Credit representatives",
 ];
 
@@ -30,8 +30,8 @@ const pains: [string, string][] = [
     "Missing verification is flagged against the file and the broker until the statements are in.",
   ],
   [
-    "CPD hours and accreditations lapse quietly.",
-    "Hours, courses and lender accreditations are tracked per broker, with alerts before anything expires.",
+    "Supervising your reps means catch-ups nobody wrote down.",
+    "Contact cadence by risk rating, file reviews, findings and training are logged, so oversight is something you can show.",
   ],
   [
     "A complaint arrives and nobody knows the clock has started.",
@@ -50,12 +50,12 @@ const stages: { tag: string; title: string; body: string; items: string[]; live?
     live: true,
     body: "The records a review will ask for, kept as the work happens.",
     items: [
-      "Credit guide and disclosure tracking",
-      "Best interests duty and file notes",
-      "Verification and serviceability checks",
-      "Complaints register",
-      "CPD, accreditation and licence dates",
-      "Audit pack export",
+      "Best interests duty and file checklists",
+      "Supervision of every representative",
+      "File reviews, findings and remediation",
+      "Complaints and breach registers with clocks",
+      "CPD, training, accreditation and licence dates",
+      "Audit pack across every register",
     ],
   },
   {
@@ -89,7 +89,7 @@ const faqs: [string, string][] = [
   ],
   [
     "Who is it for?",
-    "Mortgage and finance brokers in Australia, from solo credit representatives to brokerages with their own licence and a team.",
+    "Australian credit licensees first: independent licence holders and boutique groups that have to supervise their credit representatives. Individual brokers and brokerages with their own team use it too.",
   ],
   [
     "Is it available now?",
@@ -97,7 +97,7 @@ const faqs: [string, string][] = [
   ],
   [
     "Will it replace our CRM?",
-    "Not at the start. It sits alongside your CRM and aggregator tools and keeps the compliance record. Pipeline and operations features come later, and we will build them around how brokers work.",
+    "No, and it is not trying to. It is compliance only for now. It sits alongside your CRM and aggregator tools and keeps the record your licence depends on, especially supervision of your representatives. Pipeline and operations features come later.",
   ],
   [
     "Where is our data kept?",
