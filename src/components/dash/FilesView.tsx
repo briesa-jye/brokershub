@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Avatar, Card, CardHead, PageHeading, Pill, Progress, btnDark, btnLight, type Tone } from "./ui";
+import { NewFileModal } from "./modals";
 import { useDemo } from "./DemoProvider";
 import { Icon } from "../Icons";
 import { STEPS, fileStatus, fmtDate, initialsOf, money, type FileStatus } from "@/lib/demo-data";
@@ -17,7 +18,9 @@ const tone: Record<FileStatus, Tone> = { clear: "ok", open: "neutral", flag: "ow
 const label: Record<FileStatus, string> = { clear: "Cleared", open: "In progress", flag: "Flagged" };
 
 export function FilesView() {
-  const { files, toggleStep, selectedFileId, selectFile, reviews, reviewFile, resolveFinding } = useDemo();
+  const { files, toggleStep, selectedFileId, selectFile, reviews, reviewFile, resolveFinding, notes, addNote } = useDemo();
+  const [adding, setAdding] = useState(false);
+  const [noteText, setNoteText] = useState("");
   const [filter, setFilter] = useState<"all" | FileStatus>("all");
   const [query, setQuery] = useState("");
 
@@ -37,6 +40,11 @@ export function FilesView() {
       <PageHeading
         title="Loan files"
         sub="Tick a step to put it on file. Status, overview and the audit pack all update."
+        actions={
+          <button type="button" onClick={() => setAdding(true)} className={btnDark}>
+            <Icon name="plus" className="h-4 w-4" /> New loan file
+          </button>
+        }
       />
 
       <div className="mb-5 flex flex-wrap items-center gap-3">
@@ -149,6 +157,39 @@ export function FilesView() {
               );
             })}
           </ul>
+          <div className="border-t border-line px-5 py-4">
+            <p className="text-sm font-semibold">File notes</p>
+            <ul className="mt-2 space-y-2">
+              {(notes[selected.id] ?? []).length === 0 && <li className="text-xs text-ink-soft">No notes yet.</li>}
+              {(notes[selected.id] ?? []).map((n, i) => (
+                <li key={i} className="rounded-xl bg-tint/60 px-3 py-2 text-sm">
+                  {n.text}
+                  <span className="mt-0.5 block text-xs text-ink-soft">
+                    {n.by} · {fmtDate(n.date)}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                addNote(selected.id, noteText);
+                setNoteText("");
+              }}
+              className="mt-3 flex gap-2"
+            >
+              <input
+                aria-label="Add a file note"
+                value={noteText}
+                onChange={(e) => setNoteText(e.target.value)}
+                placeholder="Add a note, for example why this lender"
+                className="min-w-0 flex-1 rounded-full border border-line bg-surface px-4 py-2 text-sm"
+              />
+              <button type="submit" disabled={!noteText.trim()} className={`${btnLight} disabled:opacity-40`}>
+                Add
+              </button>
+            </form>
+          </div>
           <div className="flex flex-wrap items-center gap-3 border-t border-line bg-bg px-5 py-4">
             <span className="min-w-0 flex-1 basis-40">
               <span className="block text-sm font-semibold">Supervision review</span>
@@ -180,6 +221,7 @@ export function FilesView() {
           </div>
         </Card>
       </div>
+      {adding && <NewFileModal onClose={() => setAdding(false)} />}
     </>
   );
 }

@@ -18,8 +18,9 @@ const KINDS: SupervisionKind[] = ["Catch-up", "Training", "Team meeting"];
 function ContactForm({ rep }: { rep: string }) {
   const { logContact } = useDemo();
   const [kind, setKind] = useState<SupervisionKind>("Catch-up");
+  const [note, setNote] = useState("");
   return (
-    <span className="flex items-center gap-2">
+    <span className="flex flex-wrap items-center gap-2">
       <select
         aria-label={`Type of contact with ${rep}`}
         value={kind}
@@ -30,7 +31,21 @@ function ContactForm({ rep }: { rep: string }) {
           <option key={k}>{k}</option>
         ))}
       </select>
-      <button type="button" onClick={() => logContact(rep, kind)} className={btnLight}>
+      <input
+        aria-label={`Note for ${rep}`}
+        value={note}
+        onChange={(e) => setNote(e.target.value)}
+        placeholder="Note (optional)"
+        className="w-40 rounded-full border border-line bg-surface px-3 py-2 text-sm"
+      />
+      <button
+        type="button"
+        onClick={() => {
+          logContact(rep, kind, note);
+          setNote("");
+        }}
+        className={btnLight}
+      >
         Log
       </button>
     </span>

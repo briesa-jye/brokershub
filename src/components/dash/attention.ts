@@ -1,7 +1,7 @@
 "use client";
 
 import { useDemo } from "./DemoProvider";
-import { STEPS, USER, daysFromToday, fileStatus, fmtDate, licence, supervisionStatus, type NotifyKey } from "@/lib/demo-data";
+import { STEPS, USER, daysFromToday, fileStatus, fmtDate, supervisionStatus, type NotifyKey } from "@/lib/demo-data";
 
 export type AttentionItem = {
   key: string;
@@ -17,7 +17,7 @@ export type AttentionItem = {
 
 /** Everything that needs the licensee: breaches, overdue files, supervision, complaints and licence dates. Used by the overview and the bell. */
 export function useAttention(): AttentionItem[] {
-  const { files, complaints, reps, breaches, policy } = useDemo();
+  const { files, complaints, reps, breaches, policy, licenceItems } = useDemo();
 
   return [
     ...breaches
@@ -79,7 +79,7 @@ export function useAttention(): AttentionItem[] {
           href: "/dashboard/complaints",
         };
       }),
-    ...licence
+    ...licenceItems
       .filter((l) => l.date && daysFromToday(l.date) <= 60)
       .map((l): AttentionItem => ({
         key: l.label,

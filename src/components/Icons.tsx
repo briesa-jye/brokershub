@@ -63,6 +63,18 @@ const paths: Record<string, ReactNode> = {
       <circle cx="12" cy="12" r="3" />
     </>
   ),
+  mic: (
+    <>
+      <rect x="9" y="3" width="6" height="11" rx="3" />
+      <path d="M5 11a7 7 0 0014 0M12 18v3" />
+    </>
+  ),
+  sparkle: (
+    <>
+      <path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3z" />
+      <path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15z" />
+    </>
+  ),
   user: (
     <>
       <circle cx="12" cy="7.5" r="3.5" />

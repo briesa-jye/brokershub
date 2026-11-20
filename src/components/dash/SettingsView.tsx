@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useState, useSyncExternalStore } from "react";
 import { Icon, type IconName } from "../Icons";
-import { Avatar, Card, CardHead, PageHeading, Pill } from "./ui";
+import { Avatar, Card, CardHead, PageHeading, Pill, btnDark } from "./ui";
+import { NewRepModal } from "./modals";
 import { useDemo } from "./DemoProvider";
 import { USER, initialsOf, type Access, type NotifyKey, type Risk } from "@/lib/demo-data";
 
@@ -146,9 +147,18 @@ const LEVELS: Access[] = ["Owner", "Supervisor", "Representative", "Read-only"];
 
 function TeamSection() {
   const { reps, access, setAccess } = useDemo();
+  const [adding, setAdding] = useState(false);
   return (
     <Card>
-      <CardHead title="People" sub="Representatives see their own files. Supervisors see everyone's. Read-only suits auditors." />
+      <CardHead
+        title="People"
+        sub="Representatives see their own files. Supervisors see everyone's. Read-only suits auditors."
+        right={
+          <button type="button" onClick={() => setAdding(true)} className={btnDark}>
+            <Icon name="plus" className="h-4 w-4" /> Add team member
+          </button>
+        }
+      />
       <ul>
         {reps.map((r) => (
           <li key={r.name} className="flex flex-wrap items-center gap-3 border-b border-line px-5 py-3.5 last:border-0">
@@ -170,6 +180,7 @@ function TeamSection() {
           </li>
         ))}
       </ul>
+      {adding && <NewRepModal onClose={() => setAdding(false)} />}
     </Card>
   );
 }

@@ -1,6 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import { Avatar, Card, PageHeading, Pill, btnDark, btnLight, type Tone } from "./ui";
+import { NewBreachModal } from "./modals";
+import { Icon } from "../Icons";
 import { useDemo } from "./DemoProvider";
 import { daysFromToday, fmtDate, initialsOf, type BreachStatus } from "@/lib/demo-data";
 
@@ -13,6 +16,7 @@ const tone: Record<BreachStatus, Tone> = {
 
 export function BreachesView() {
   const { breaches, setBreachStatus } = useDemo();
+  const [adding, setAdding] = useState(false);
   const live = breaches.filter((b) => b.status === "Assessing" || b.status === "Reportable").length;
 
   return (
@@ -20,7 +24,14 @@ export function BreachesView() {
       <PageHeading
         title="Breaches"
         sub="Record every possible breach the day it surfaces. If it is reportable, the 30-day clock to lodge with ASIC starts when you have reasonable grounds to believe so."
-        actions={<Pill tone={live ? "owed" : "ok"}>{live} to decide or lodge</Pill>}
+        actions={
+          <>
+            <Pill tone={live ? "owed" : "ok"}>{live} to decide or lodge</Pill>
+            <button type="button" onClick={() => setAdding(true)} className={btnDark}>
+              <Icon name="plus" className="h-4 w-4" /> Record breach
+            </button>
+          </>
+        }
       />
       <Card>
         <ul>
@@ -63,6 +74,7 @@ export function BreachesView() {
           })}
         </ul>
       </Card>
+      {adding && <NewBreachModal onClose={() => setAdding(false)} />}
       <p className="mt-4 max-w-2xl text-xs text-ink-soft">
         BROKERSHUB keeps the record and the clock. Whether something is reportable, and what to lodge, is a decision for
         you as licensee, ideally with advice.

@@ -12,6 +12,7 @@ import { USER, fileStatus, initialsOf } from "@/lib/demo-data";
 
 const NAV: { href: string; label: string; icon: IconName }[] = [
   { href: "/dashboard", label: "Dashboard", icon: "grid" },
+  { href: "/dashboard/assistant", label: "Assistance", icon: "sparkle" },
   { href: "/dashboard/files", label: "Loan files", icon: "file" },
   { href: "/dashboard/supervision", label: "Supervision", icon: "eye" },
   { href: "/dashboard/representatives", label: "Representatives", icon: "users" },

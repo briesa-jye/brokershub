@@ -144,7 +144,7 @@ export const initialReps: Rep[] = [
 
 export const BROKERS = initialReps.map((r) => r.name);
 
-export type SupervisionKind = "Catch-up" | "Training" | "Team meeting" | "File review";
+export type SupervisionKind = "Catch-up" | "Training" | "Team meeting" | "File review" | "Onboarding";
 
 export type SupervisionEntry = {
   id: string;
@@ -233,6 +233,14 @@ export const initialBreaches: Breach[] = [
 
 export type LicenceItem = { label: string; detail: string; date?: string; dateLabel?: string };
 
+export const PURPOSES = ["Refinance", "First home buyer", "Investment loan", "Construction", "Debt consolidation", "Upgrade and sell", "Other"];
+export const COMPLAINT_STAGES = ["Received", "Acknowledged", "Investigating", "Response sent", "Resolved"] as const;
+
+export type FileNote = { date: string; by: string; text: string };
+export const initialNotes: Record<string, FileNote[]> = {
+  "LF-1043": [{ date: "2026-11-05", by: "Priya Nair", text: "Client wants to keep the existing offset account. Comparing two lenders that allow it." }],
+};
+
 export const licence: LicenceItem[] = [
   { label: "Australian credit licence", detail: "ACL 000000 (sample), conditions on file" },
   { label: "Credit representatives on ASIC's register", detail: "3 of 3 notified" },
@@ -254,6 +262,16 @@ export function daysFromToday(iso: string) {
   const a = Date.parse(`${TODAY}T00:00:00Z`);
   const b = Date.parse(`${iso}T00:00:00Z`);
   return Math.round((b - a) / 86400000);
+}
+
+export function addDays(iso: string, n: number) {
+  const d = new Date(`${iso}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + n);
+  return d.toISOString().slice(0, 10);
+}
+
+export function isISODate(v: string) {
+  return /^\d{4}-\d{2}-\d{2}$/.test(v) && !Number.isNaN(Date.parse(`${v}T00:00:00Z`));
 }
 
 export function money(n: number) {

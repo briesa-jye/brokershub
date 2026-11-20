@@ -1,17 +1,30 @@
 "use client";
 
-import { Avatar, Card, PageHeading, Pill, Progress } from "./ui";
+import { useState } from "react";
+import { Avatar, Card, PageHeading, Pill, Progress, btnDark } from "./ui";
 import { LicenceCard } from "./LicenceCard";
+import { AccreditationModal, CpdModal, NewRepModal } from "./modals";
+import { input } from "./forms";
 import { useDemo } from "./DemoProvider";
-import { daysFromToday, fmtDate, initialsOf } from "@/lib/demo-data";
+import { Icon } from "../Icons";
+import { daysFromToday, fmtDate, initialsOf, type Risk } from "@/lib/demo-data";
 
 export function RepsView() {
-  const { reps } = useDemo();
+  const { reps, setRisk, completeTraining } = useDemo();
+  const [adding, setAdding] = useState(false);
+  const [cpdFor, setCpdFor] = useState<string | null>(null);
+  const [accFor, setAccFor] = useState<string | null>(null);
+
   return (
     <>
       <PageHeading
         title="Representatives"
         sub="Everyone you are responsible for: authorisation, CPD, training and lender accreditations, flagged before anything lapses."
+        actions={
+          <button type="button" onClick={() => setAdding(true)} className={btnDark}>
+            <Icon name="plus" className="h-4 w-4" /> Add representative
+          </button>
+        }
       />
 
       <div className="space-y-6">
@@ -27,25 +40,51 @@ export function RepsView() {
                     {m.kind} · since {fmtDate(m.authorised)}
                   </p>
                 </div>
-                <Pill tone={m.risk === "High" ? "owed" : "neutral"}>{m.risk}</Pill>
+                <select
+                  aria-label={`Risk rating for ${m.name}`}
+                  value={m.risk}
+                  onChange={(e) => setRisk(m.name, e.target.value as Risk)}
+                  className={`${input} mt-0 w-auto rounded-full py-1.5 text-xs`}
+                >
+                  <option>High</option>
+                  <option>Medium</option>
+                  <option>Low</option>
+                </select>
               </div>
               <div className="space-y-4 border-b border-line px-5 py-4">
-                {[
-                  ["CPD hours this year", m.cpdDone, m.cpdTarget],
-                  ["Assigned training", m.trainingDone, m.trainingTotal],
-                ].map(([k, d, t]) => (
-                  <div key={k as string}>
-                    <div className="mb-1.5 flex justify-between text-xs text-ink-soft">
-                      <span>{k}</span>
+                <div>
+                  <div className="mb-1.5 flex items-center justify-between text-xs text-ink-soft">
+                    <span>CPD hours this year</span>
+                    <span className="flex items-center gap-2">
                       <span className="tabular-nums">
-                        {d} of {t}
+                        {m.cpdDone} of {m.cpdTarget}
                       </span>
-                    </div>
-                    <Progress pct={Math.min(100, Math.round(((d as number) / (t as number)) * 100))} />
+                      <button type="button" onClick={() => setCpdFor(m.name)} className="font-semibold text-ink underline">
+                        Log hours
+                      </button>
+                    </span>
                   </div>
-                ))}
+                  <Progress pct={Math.min(100, Math.round((m.cpdDone / m.cpdTarget) * 100))} />
+                </div>
+                <div>
+                  <div className="mb-1.5 flex items-center justify-between text-xs text-ink-soft">
+                    <span>Assigned training</span>
+                    <span className="flex items-center gap-2">
+                      <span className="tabular-nums">
+                        {m.trainingDone} of {m.trainingTotal}
+                      </span>
+                      {m.trainingDone < m.trainingTotal && (
+                        <button type="button" onClick={() => completeTraining(m.name)} className="font-semibold text-ink underline">
+                          Mark module done
+                        </button>
+                      )}
+                    </span>
+                  </div>
+                  <Progress pct={Math.min(100, Math.round((m.trainingDone / m.trainingTotal) * 100))} />
+                </div>
               </div>
               <ul>
+                {m.accreditations.length === 0 && <li className="px-5 py-3 text-xs text-ink-soft">No accreditations recorded.</li>}
                 {m.accreditations.map((a) => {
                   const d = daysFromToday(a.expires);
                   const soon = d <= 60;
@@ -60,10 +99,19 @@ export function RepsView() {
                   );
                 })}
               </ul>
+              <div className="border-t border-line bg-bg px-5 py-3">
+                <button type="button" onClick={() => setAccFor(m.name)} className="text-xs font-semibold underline">
+                  + Add accreditation
+                </button>
+              </div>
             </Card>
           ))}
         </div>
       </div>
+
+      {adding && <NewRepModal onClose={() => setAdding(false)} />}
+      {cpdFor && <CpdModal rep={cpdFor} onClose={() => setCpdFor(null)} />}
+      {accFor && <AccreditationModal rep={accFor} onClose={() => setAccFor(null)} />}
     </>
   );
 }

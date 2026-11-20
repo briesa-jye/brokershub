@@ -1,6 +1,6 @@
 export type Guide = { id: string; category: string; title: string; summary: string; body: string[] };
 
-export const HELP_CATEGORIES = ["Getting started", "Loan files", "Supervision", "Registers", "Audit pack", "Settings"];
+export const HELP_CATEGORIES = ["Getting started", "Assistance", "Loan files", "Supervision", "Registers", "Audit pack", "Settings"];
 
 export const HELP: Guide[] = [
   {
@@ -20,6 +20,36 @@ export const HELP: Guide[] = [
     summary: "Everything here is sample data and resets when you reload.",
     body: [
       "The workspace, people, files and dates are invented so you can try the product. Anything you change stays in your browser tab until you reload the page.",
+    ],
+  },
+  {
+    id: "adding",
+    category: "Getting started",
+    title: "Adding records",
+    summary: "Every area has a button to add what is missing.",
+    body: [
+      "Loan files: New loan file, then add notes on the file. Supervision: log a catch-up, training or team meeting with a note. Representatives: add a representative, set their risk rating, log CPD hours, mark a training module done and add lender accreditations.",
+      "Complaints: Log complaint, then move it through its stages. Breaches: Record breach. Licence health: Add item, and Mark renewed when something is renewed. Settings, Team also lets you add a team member.",
+    ],
+  },
+  {
+    id: "assistant",
+    category: "Assistance",
+    title: "What Assistance can do",
+    summary: "Ask questions about your licence and have it do the paperwork.",
+    body: [
+      "Assistance can look across your loan files, supervision, complaints, breaches and licence dates, and make changes for you: open files, add notes, log complaints, record possible breaches, log supervision contacts, add team members and log CPD hours.",
+      "It will not pass or fail a file review, tick a checklist step, decide whether a breach is reportable or change your policy. Those are your calls as licensee, and it sends you to the right page instead.",
+    ],
+  },
+  {
+    id: "approval",
+    category: "Assistance",
+    title: "Approving changes",
+    summary: "Nothing is changed until you approve it, unless you turn that off.",
+    body: [
+      "With Ask before making changes switched on, each change appears as a card showing exactly what will happen. Approve it or skip it. If several are waiting you can approve or skip them all.",
+      "In the demo, Assistance runs in demo mode and answers from the sample data. The live assistant, which also answers general compliance questions, is switched on by connecting a Claude API key.",
     ],
   },
   {
