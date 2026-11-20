@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Icon } from "./Icons";
 import { Logo } from "./Logo";
-import { DEMO_HREF } from "@/lib/site";
 
 const links = [
   { href: "/#problem", label: "The problem" },
@@ -66,12 +65,18 @@ export function Navbar() {
           </ul>
 
           <div className="flex items-center gap-2">
-            <a
-              href={DEMO_HREF}
-              className={`whitespace-nowrap rounded-full bg-ink font-semibold text-bg transition-all duration-500 hover:bg-ink/85 ${pill ? "px-5 py-2 text-sm" : "px-6 py-2.5 text-base"}`}
+            <Link
+              href="/login"
+              className={`whitespace-nowrap rounded-full border border-line font-semibold transition-all duration-500 hover:bg-tint ${pill ? "px-5 py-2 text-sm" : "px-5 py-2.5 text-base sm:px-6"}`}
             >
-              Book a demo
-            </a>
+              Sign in
+            </Link>
+            <Link
+              href="/signup"
+              className={`hidden whitespace-nowrap rounded-full bg-ink font-semibold text-bg transition-all duration-500 hover:bg-ink/85 sm:inline-block ${pill ? "px-5 py-2 text-sm" : "px-6 py-2.5 text-base"}`}
+            >
+              Sign up
+            </Link>
             <button
               type="button"
               className="flex h-11 w-11 items-center justify-center md:hidden"
@@ -104,6 +109,22 @@ export function Navbar() {
               </li>
             ))}
           </ul>
+          <div className="mt-5 grid grid-cols-2 gap-3">
+            <Link
+              href="/login"
+              onClick={() => setOpen(false)}
+              className="rounded-full border border-line py-3 text-center font-semibold"
+            >
+              Sign in
+            </Link>
+            <Link
+              href="/signup"
+              onClick={() => setOpen(false)}
+              className="rounded-full bg-ink py-3 text-center font-semibold text-bg"
+            >
+              Sign up
+            </Link>
+          </div>
         </div>
       )}
     </header>
