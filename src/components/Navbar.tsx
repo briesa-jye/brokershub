@@ -1,18 +1,20 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Icon } from "./Icons";
 import { Logo } from "./Logo";
 
 const links = [
-  { href: "/#problem", label: "The problem" },
-  { href: "/#platform", label: "Platform" },
-  { href: "/#audit", label: "Audit pack" },
+  { href: "/about", label: "About" },
   { href: "/pricing", label: "Pricing" },
+  { href: "/solutions", label: "Solutions" },
+  { href: "/resources", label: "Resources" },
 ];
 
 export function Navbar() {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -39,41 +41,42 @@ export function Navbar() {
         <nav
           aria-label="Main"
           className={`mx-auto flex max-w-6xl items-center justify-between transition-all duration-500 ${
-            pill ? "h-16 gap-4 px-6" : "h-20 gap-4 px-4 sm:h-24 sm:px-8"
+            pill ? "h-16 px-6" : "h-20 px-2 sm:h-24 sm:px-8"
           }`}
         >
-          <Link
-            href="/"
-            onClick={() => setOpen(false)}
-            aria-label="BROKERSHUB home"
-            className="flex min-h-11 items-center"
-          >
-            <Logo className={pill ? "h-6" : "h-7 sm:h-8"} />
+          <Link href="/" onClick={() => setOpen(false)} aria-label="BROKERSHUB home" className="flex min-h-11 items-center">
+            <Logo className={pill ? "h-7" : "h-8 sm:h-9"} />
           </Link>
 
-          <ul className="hidden items-center gap-6 whitespace-nowrap md:flex lg:gap-8">
-            {links.map((l) => (
-              <li key={l.href}>
-                <a
-                  href={l.href}
-                  className="relative py-1 font-medium after:absolute after:inset-x-0 after:-bottom-0.5 after:h-0.5 after:origin-left after:scale-x-0 after:bg-accent after:transition-transform after:duration-200 hover:after:scale-x-100"
-                >
-                  {l.label}
-                </a>
-              </li>
-            ))}
+          <ul className="hidden items-center gap-8 md:flex">
+            {links.map((l) => {
+              const active = pathname.startsWith(l.href);
+              return (
+                <li key={l.href}>
+                  <Link
+                    href={l.href}
+                    aria-current={active ? "page" : undefined}
+                    className={`relative py-1 font-medium transition-all duration-500 after:absolute after:inset-x-0 after:-bottom-0.5 after:h-0.5 after:origin-left after:bg-accent after:transition-transform after:duration-200 ${
+                      active ? "after:scale-x-100" : "after:scale-x-0 hover:after:scale-x-100"
+                    }`}
+                  >
+                    {l.label}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
 
           <div className="flex items-center gap-2">
             <Link
               href="/dashboard"
-              className={`whitespace-nowrap rounded-full border border-line font-semibold transition-all duration-500 hover:bg-tint ${pill ? "px-5 py-2 text-sm" : "px-5 py-2.5 text-base sm:px-6"}`}
+              className={`hidden rounded-full border border-line font-semibold transition-all duration-500 hover:bg-tint sm:inline-block ${pill ? "px-5 py-2 text-sm" : "px-6 py-2.5 text-base"}`}
             >
-              Sign in
+              Login
             </Link>
             <Link
               href="/signup"
-              className={`hidden whitespace-nowrap rounded-full bg-ink font-semibold text-bg transition-all duration-500 hover:bg-ink/85 sm:inline-block ${pill ? "px-5 py-2 text-sm" : "px-6 py-2.5 text-base"}`}
+              className={`hidden rounded-full bg-ink font-semibold text-bg transition-all duration-500 hover:bg-ink/85 sm:inline-block ${pill ? "px-5 py-2 text-sm" : "px-6 py-2.5 text-base"}`}
             >
               Sign up
             </Link>
@@ -99,13 +102,13 @@ export function Navbar() {
           <ul>
             {links.map((l) => (
               <li key={l.href}>
-                <a
+                <Link
                   href={l.href}
                   onClick={() => setOpen(false)}
                   className="block border-b border-line py-4 font-display text-2xl font-bold"
                 >
                   {l.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
@@ -115,7 +118,7 @@ export function Navbar() {
               onClick={() => setOpen(false)}
               className="rounded-full border border-line py-3 text-center font-semibold"
             >
-              Sign in
+              Login
             </Link>
             <Link
               href="/signup"

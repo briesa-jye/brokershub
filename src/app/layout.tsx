@@ -4,6 +4,8 @@ import { Motion } from "@/components/Motion";
 import { Navbar } from "@/components/Navbar";
 import { SiteChrome } from "@/components/SiteChrome";
 import { Footer } from "@/components/Footer";
+import { JsonLd } from "@/components/JsonLd";
+import { organization, website } from "@/lib/schema";
 import {
   SITE_DESCRIPTION,
   SITE_NAME,
@@ -77,6 +79,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         />
       </head>
       <body className="flex min-h-full flex-col">
+        <JsonLd data={[organization, website]} />
         <Motion />
         <SiteChrome nav={<Navbar />} footer={<Footer />}>
           {children}

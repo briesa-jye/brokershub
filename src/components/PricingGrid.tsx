@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { Icon, type IconName } from "./Icons";
 import { DEMO_HREF } from "@/lib/site";
@@ -117,14 +118,14 @@ export function PricingGrid() {
               </span>
             </p>
 
-            <a
+            <Link
               href={DEMO_HREF}
               className={`mt-6 inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-semibold transition-colors duration-200 ${
                 on ? "bg-accent text-ink hover:bg-accent/85" : "bg-ink text-bg hover:bg-ink/85"
               }`}
             >
               Book a demo <Icon name="arrow" className="h-4 w-4" />
-            </a>
+            </Link>
 
             <ul className={`mt-6 space-y-2 border-t pt-6 text-sm font-semibold ${on ? "border-bg/20" : "border-line"}`}>
               {p.top.map((t) => (

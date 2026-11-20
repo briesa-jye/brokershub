@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { DEMO_HREF } from "@/lib/site";
 
 /** Placeholder until accounts exist. Replace with the real form. */
 export function AuthStub({ mode }: { mode: "Sign in" | "Sign up" }) {
@@ -10,16 +9,13 @@ export function AuthStub({ mode }: { mode: "Sign in" | "Sign up" }) {
         Accounts open soon.
       </h1>
       <p className="mt-6 text-lg text-ink-soft">
-        BROKERSHUB is in early access. Email us and we will get you set up as
-        soon as accounts open.
+        BROKERSHUB is in early access. Book a demo and we will get you set up as
+        soon as accounts open, or try the demo dashboard now.
       </p>
       <div className="mt-8 flex flex-wrap gap-3">
-        <a
-          href={DEMO_HREF}
-          className="rounded-full bg-ink px-7 py-3.5 font-semibold text-bg hover:bg-ink/85"
-        >
-          Get in touch
-        </a>
+        <Link href="/demo" className="rounded-full bg-ink px-7 py-3.5 font-semibold text-bg hover:bg-ink/85">
+          Book a demo
+        </Link>
         <Link href="/" className="rounded-full border border-ink/30 px-7 py-3.5 font-semibold hover:bg-tint">
           Back home
         </Link>

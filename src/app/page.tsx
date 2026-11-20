@@ -1,12 +1,11 @@
 import { AuditTrailMock, FileBoardMock } from "@/components/Mocks";
-import { CtaBand, Eyebrow } from "@/components/Sections";
+import Link from "next/link";
 import { Icon } from "@/components/Icons";
-import { FaqList } from "@/components/Faq";
+import { ButtonLink, CtaBand, Eyebrow } from "@/components/Sections";
 import { Magnetic } from "@/components/Magnetic";
-import { DEMO_HREF, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
-
-const cta =
-  "inline-flex items-center gap-2 rounded-full px-7 py-3.5 font-semibold transition-colors duration-200";
+import { JsonLd } from "@/components/JsonLd";
+import { guides } from "@/lib/guides";
+import { software } from "@/lib/schema";
 
 const who = [
   "Independent credit licensees",
@@ -82,47 +81,10 @@ const stages: { tag: string; title: string; body: string; items: string[]; live?
   },
 ];
 
-const faqs: [string, string][] = [
-  [
-    "Does BROKERSHUB make us compliant?",
-    "No software can. BROKERSHUB helps you do the diligence and keep the evidence. Your credit licensee, or aggregator where you are a credit representative, remains responsible for sign-off.",
-  ],
-  [
-    "Who is it for?",
-    "Australian credit licensees first: independent licence holders and boutique groups that have to supervise their credit representatives. Individual brokers and brokerages with their own team use it too.",
-  ],
-  [
-    "Is it available now?",
-    "We are building with a small group of early-access brokerages. Book a demo and we will show you where the product is and what is next.",
-  ],
-  [
-    "Will it replace our CRM?",
-    "No, and it is not trying to. It is compliance only for now. It sits alongside your CRM and aggregator tools and keeps the record your licence depends on, especially supervision of your representatives. Pipeline and operations features come later.",
-  ],
-  [
-    "Where is our data kept?",
-    "Client and file data is hosted in Australia and access is logged. We will publish the full security and privacy detail before anyone is onboarded.",
-  ],
-];
-
 export default function Home() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            name: SITE_NAME,
-            url: SITE_URL,
-            description: SITE_DESCRIPTION,
-            applicationCategory: "BusinessApplication",
-            areaServed: { "@type": "Country", name: "Australia" },
-          }),
-        }}
-      />
-
+      <JsonLd data={software} />
       {/* hero */}
       <section className="relative overflow-hidden">
         <div className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)] items-center gap-14 px-5 pb-20 pt-14 sm:px-8 sm:pt-20 lg:grid-cols-[0.9fr_1.1fr]">
@@ -132,7 +94,7 @@ export default function Home() {
             </div>
             <h1
               data-load
-              className="mt-6 font-display text-[clamp(2.7rem,6.4vw,5.5rem)] font-extrabold leading-[0.98] tracking-tight"
+              className="mt-6 font-display text-[clamp(2.7rem,6.4vw,5.5rem)] font-bold leading-[0.98] tracking-tight"
             >
               Every loan file <span className="tape">defensible</span> before
               anyone asks.
@@ -144,16 +106,11 @@ export default function Home() {
             </p>
             <div data-load className="mt-9 flex flex-wrap items-center gap-4">
               <Magnetic>
-                <a href={DEMO_HREF} className={`${cta} bg-ink text-bg hover:bg-ink/85`}>
-                  Book a demo <Icon name="arrow" className="h-4 w-4" />
-                </a>
+                <ButtonLink href="/signup">Sign up</ButtonLink>
               </Magnetic>
-              <a
-                href="#platform"
-                className={`${cta} border border-ink/30 hover:border-ink hover:bg-tint`}
-              >
-                See what it covers
-              </a>
+              <ButtonLink href="/solutions" variant="ghost">
+                See how a file gets checked
+              </ButtonLink>
             </div>
           </div>
           <div data-load>
@@ -197,7 +154,7 @@ export default function Home() {
       <section id="problem" className="mx-auto mt-28 grid max-w-6xl scroll-mt-24 gap-14 px-5 sm:px-8 lg:grid-cols-[1fr_1fr]">
         <div data-reveal>
           <Eyebrow>The problem</Eyebrow>
-          <h2 className="mt-5 font-display text-[clamp(2rem,4.2vw,3.5rem)] font-extrabold leading-[1.02] tracking-tight">
+          <h2 className="mt-5 font-display text-[clamp(2rem,4.2vw,3.5rem)] font-bold leading-[1.02] tracking-tight">
             The proof lives in inboxes, spreadsheets and memory.
           </h2>
           <p className="mt-6 max-w-md text-ink-soft">
@@ -243,7 +200,7 @@ export default function Home() {
         <div className="mt-20 grid grid-cols-[minmax(0,1fr)] gap-12 lg:grid-cols-[0.8fr_1.2fr]">
           <div data-reveal className="lg:sticky lg:top-28 lg:self-start">
             <Eyebrow>Where it goes wrong</Eyebrow>
-            <h2 className="mt-5 font-display text-[clamp(2rem,4vw,3.2rem)] font-extrabold leading-[1.02] tracking-tight">
+            <h2 className="mt-5 font-display text-[clamp(2rem,4vw,3.2rem)] font-bold leading-[1.02] tracking-tight">
               Six places broker files lose their evidence.
             </h2>
             <p className="mt-5 max-w-sm text-ink-soft">
@@ -257,7 +214,7 @@ export default function Home() {
                 className="row-hover grid gap-3 border-b border-line py-6 md:grid-cols-[2.5rem_1fr_1fr] md:gap-6"
               >
                 <span className="font-mono text-sm text-ink-soft">0{i + 1}</span>
-                <p className="font-display text-xl font-extrabold leading-snug">{pain}</p>
+                <p className="font-display text-xl font-bold leading-snug">{pain}</p>
                 <p className="text-ink-soft">
                   <span className="mb-1 block font-mono text-[0.7rem] uppercase tracking-widest text-ink">
                     With BROKERSHUB
@@ -270,11 +227,34 @@ export default function Home() {
         </div>
       </section>
 
+      {/* how it works */}
+      <section className="mx-auto mt-28 max-w-6xl px-5 sm:px-8">
+        <div data-reveal>
+          <Eyebrow>How it works</Eyebrow>
+          <h2 className="mt-5 max-w-2xl font-display text-[clamp(2rem,4.2vw,3.5rem)] font-bold leading-[1.02] tracking-tight">
+            Three steps from first file to audit pack.
+          </h2>
+        </div>
+        <ol data-stagger className="mt-12 grid gap-10 border-t border-ink pt-8 md:grid-cols-3">
+          {[
+            ["Add your people", "Enter your licence, representatives and their risk ratings, and set how often you contact each one."],
+            ["Work", "Checklists, supervision, complaints and breaches fill as the work is done, and anything owed is flagged."],
+            ["Show", "Export the audit pack for the period a reviewer names, or give them read-only access."],
+          ].map(([t, d], i) => (
+            <li key={t}>
+              <span className="font-mono text-sm text-ink-soft">Step {i + 1}</span>
+              <h3 className="mt-2 font-display text-3xl font-bold">{t}</h3>
+              <p className="mt-3 max-w-xs text-ink-soft">{d}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+
       {/* platform: compliance first, operations later */}
       <section id="platform" className="mx-auto mt-28 max-w-6xl scroll-mt-24 px-5 sm:px-8">
         <div data-reveal>
           <Eyebrow>The platform</Eyebrow>
-          <h2 className="mt-5 max-w-3xl font-display text-[clamp(2rem,4.2vw,3.5rem)] font-extrabold leading-[1.02] tracking-tight">
+          <h2 className="mt-5 max-w-3xl font-display text-[clamp(2rem,4.2vw,3.5rem)] font-bold leading-[1.02] tracking-tight">
             Starts with compliance. Grows into how the brokerage runs.
           </h2>
           <p className="mt-6 max-w-xl text-ink-soft">
@@ -293,7 +273,7 @@ export default function Home() {
               >
                 {s.tag}
               </span>
-              <h3 className="mt-5 font-display text-3xl font-extrabold">{s.title}</h3>
+              <h3 className="mt-5 font-display text-3xl font-bold">{s.title}</h3>
               <p className="mt-3 text-ink-soft">{s.body}</p>
               <ul className="mt-6 space-y-2 border-t border-line pt-5 text-sm">
                 {s.items.map((it) => (
@@ -313,7 +293,7 @@ export default function Home() {
         <div className="mx-auto grid max-w-6xl items-center gap-14 px-5 sm:px-8 lg:grid-cols-2">
           <div data-reveal>
             <Eyebrow>Audit ready</Eyebrow>
-            <h2 className="mt-5 font-display text-[clamp(2rem,4.2vw,3.5rem)] font-extrabold leading-[1.02] tracking-tight">
+            <h2 className="mt-5 font-display text-[clamp(2rem,4.2vw,3.5rem)] font-bold leading-[1.02] tracking-tight">
               The reviewer asks. The file already answers.
             </h2>
             <p className="mt-6 max-w-md text-bg/75">
@@ -322,6 +302,11 @@ export default function Home() {
               review, a lender audit or a complaint is an export, not a week of
               searching.
             </p>
+            <div className="mt-8">
+              <ButtonLink href="/solutions" variant="light">
+                See the capabilities
+              </ButtonLink>
+            </div>
           </div>
           <div data-reveal>
             <AuditTrailMock />
@@ -329,17 +314,28 @@ export default function Home() {
         </div>
       </section>
 
-      {/* faq */}
-      <section id="faq" className="mx-auto mt-28 max-w-3xl scroll-mt-24 px-5 sm:px-8">
+      <section className="mx-auto mt-28 max-w-6xl px-5 sm:px-8">
         <div data-reveal>
-          <Eyebrow>Questions</Eyebrow>
-          <h2 className="mt-5 font-display text-[clamp(2rem,4.2vw,3.5rem)] font-extrabold leading-[1.02] tracking-tight">
-            Common questions.
+          <Eyebrow>Guides</Eyebrow>
+          <h2 className="mt-5 max-w-2xl font-display text-[clamp(2rem,4.2vw,3.5rem)] font-bold leading-[1.02] tracking-tight">
+            Plain-language compliance guides for brokers and licensees.
           </h2>
-          <div className="mt-10">
-            <FaqList faqs={faqs} />
-          </div>
         </div>
+        <ul data-stagger className="mt-10 grid border-t border-ink md:grid-cols-2 md:gap-x-10">
+          {guides.slice(0, 4).map((g) => (
+            <li key={g.slug} className="border-b border-line">
+              <Link href={`/guides/${g.slug}`} className="row-hover block py-5">
+                <span className="eyebrow">{g.category}</span>
+                <span className="mt-2 block font-display text-2xl font-bold leading-tight">{g.h1}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <p className="mt-6">
+          <Link href="/guides" className="font-semibold underline">
+            All compliance guides
+          </Link>
+        </p>
       </section>
 
       <CtaBand />

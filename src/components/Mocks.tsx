@@ -87,3 +87,76 @@ export function AuditTrailMock() {
     </div>
   );
 }
+
+const reps: { name: string; risk: string; status: string; owed: boolean; reviews: number }[] = [
+  { name: "Daniel Cho", risk: "High risk", status: "Due in 3 days", owed: true, reviews: 25 },
+  { name: "Priya Nair", risk: "Medium risk", status: "Overdue 10 days", owed: true, reviews: 0 },
+  { name: "Aaron Lee", risk: "Medium risk", status: "On track", owed: false, reviews: 100 },
+  { name: "Mia Torres", risk: "Low risk", status: "On track", owed: false, reviews: 0 },
+];
+
+export function SupervisionMock() {
+  return (
+    <div className="overflow-hidden rounded-2xl border border-line bg-surface shadow-[0_30px_80px_-30px_oklch(0.22_0.04_230/0.35)]">
+      <div className="flex items-center justify-between border-b border-line px-5 py-3">
+        <p className="font-mono text-xs uppercase tracking-widest text-ink-soft">Supervision this quarter</p>
+        <p className="font-mono text-xs uppercase tracking-widest text-ink-soft">Sample data</p>
+      </div>
+      <ul>
+        {reps.map((r) => (
+          <li key={r.name} className="border-b border-line px-5 py-4 last:border-b-0">
+            <div className="flex items-center justify-between gap-4">
+              <div className="min-w-0">
+                <p className="font-display font-bold">{r.name}</p>
+                <p className="text-sm text-ink-soft">{r.risk}</p>
+              </div>
+              <span
+                className={`shrink-0 rounded-full px-3 py-1 font-mono text-[0.7rem] uppercase tracking-wider ${r.owed ? "bg-accent text-ink" : "bg-tint text-ink"}`}
+              >
+                {r.status}
+              </span>
+            </div>
+            <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-tint">
+              <div className="h-full rounded-full bg-accent" style={{ width: `${r.reviews}%` }} />
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export function BreachClockMock() {
+  return (
+    <div className="overflow-hidden rounded-2xl border border-line bg-surface shadow-[0_30px_80px_-30px_oklch(0.22_0.04_230/0.35)]">
+      <div className="flex items-center justify-between border-b border-line px-5 py-3">
+        <p className="font-mono text-xs uppercase tracking-widest text-ink-soft">Breaches register</p>
+        <p className="font-mono text-xs uppercase tracking-widest text-ink-soft">Sample data</p>
+      </div>
+      <div className="bg-tint px-5 py-5">
+        <p className="font-mono text-xs uppercase tracking-widest text-ink-soft">B-31 · Reportable</p>
+        <p className="mt-2 font-display text-xl font-bold">Credit proposal issued before expenses were verified</p>
+        <div className="mt-5 flex items-end justify-between">
+          <p className="font-display text-5xl font-extrabold tracking-tight">19</p>
+          <p className="pb-1 text-sm text-ink-soft">days left to lodge with ASIC</p>
+        </div>
+        <div className="mt-3 h-2 overflow-hidden rounded-full bg-surface">
+          <div className="h-full w-[37%] rounded-full bg-accent" />
+        </div>
+      </div>
+      <ul>
+        {[
+          ["B-32", "Client documents emailed to the wrong address", "Assessing"],
+          ["B-29", "Credit guide not issued before assistance began", "Reported"],
+        ].map(([id, t, s]) => (
+          <li key={id} className="flex items-center justify-between gap-4 border-t border-line px-5 py-4">
+            <p className="min-w-0 text-sm">
+              <span className="font-mono text-ink-soft">{id}</span> {t}
+            </p>
+            <span className="shrink-0 rounded-full bg-tint px-3 py-1 font-mono text-[0.7rem] uppercase tracking-wider">{s}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}

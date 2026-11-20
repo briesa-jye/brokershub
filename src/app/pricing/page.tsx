@@ -81,7 +81,7 @@ export default function Pricing() {
       <section className="mx-auto mt-24 max-w-6xl px-5 sm:px-8">
         <div data-reveal>
           <Eyebrow>Limits by plan</Eyebrow>
-          <h2 className="mt-5 max-w-2xl font-display text-[clamp(2rem,4vw,3.2rem)] font-extrabold leading-[1.02] tracking-tight">
+          <h2 className="mt-5 max-w-2xl font-display text-[clamp(2rem,4vw,3.2rem)] font-bold leading-[1.02] tracking-tight">
             The same system on every plan.
           </h2>
         </div>
@@ -112,7 +112,7 @@ export default function Pricing() {
       <section className="mx-auto mt-28 max-w-3xl px-5 sm:px-8">
         <div data-reveal>
           <Eyebrow>Questions</Eyebrow>
-          <h2 className="mt-5 font-display text-[clamp(2rem,4.2vw,3.5rem)] font-extrabold leading-[1.02] tracking-tight">
+          <h2 className="mt-5 font-display text-[clamp(2rem,4.2vw,3.5rem)] font-bold leading-[1.02] tracking-tight">
             About pricing.
           </h2>
           <div className="mt-10">
