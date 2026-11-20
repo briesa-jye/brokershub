@@ -7,10 +7,10 @@ import { Logo } from "./Logo";
 import { DEMO_HREF } from "@/lib/site";
 
 const links = [
-  { href: "#problem", label: "The problem" },
-  { href: "#platform", label: "Platform" },
-  { href: "#audit", label: "Audit pack" },
-  { href: "#faq", label: "Questions" },
+  { href: "/#problem", label: "The problem" },
+  { href: "/#platform", label: "Platform" },
+  { href: "/#audit", label: "Audit pack" },
+  { href: "/pricing", label: "Pricing" },
 ];
 
 export function Navbar() {

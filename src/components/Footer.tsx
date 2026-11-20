@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Logo } from "./Logo";
 import { CONTACT_EMAIL } from "@/lib/site";
 
@@ -15,9 +16,10 @@ export function Footer() {
         <div>
           <p className="eyebrow">Product</p>
           <ul className="mt-4 space-y-2 text-sm">
-            <li><a href="#platform" className="hover:underline">Platform</a></li>
-            <li><a href="#audit" className="hover:underline">Audit pack</a></li>
-            <li><a href="#faq" className="hover:underline">Questions</a></li>
+            <li><Link href="/#platform" className="hover:underline">Platform</Link></li>
+            <li><Link href="/#audit" className="hover:underline">Audit pack</Link></li>
+            <li><Link href="/pricing" className="hover:underline">Pricing</Link></li>
+            <li><Link href="/#faq" className="hover:underline">Questions</Link></li>
           </ul>
         </div>
         <div>
